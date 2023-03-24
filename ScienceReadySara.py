@@ -160,7 +160,7 @@ def main():
             command = "/usr/bin/xpaset ds9 fits" + "Light" + "<" + saving_path + "/" + str(i)
         elif i.find("Light") >= 0 or i.find("light") >= 0:
             command = "/usr/bin/xpaset ds9 fits" + "Dark" + "<" + saving_path + "/" + str(i)
-        elif i.find("Bias") >= 0 or i.find("bias") >= 0:
+        elif i.find("Bias") >= 0 or i.find("bias") >= 0: 
             command = "/usr/bin/xpaset ds9 fits" + "Bias" + "<" + saving_path + "/" + str(i)
         elif i.find("flat") >= 0 or i.find("Flat") >= 0:
             command = "/usr/bin/xpaset ds9 fits" + "Flat" + "<" + saving_path + "/" + str(i)
