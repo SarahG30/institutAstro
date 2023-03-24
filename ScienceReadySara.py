@@ -6,10 +6,7 @@ import numpy as np
 import sys
 import subprocess
 
-
-
-###/home/astro/PycharmProjects/SARA/images_to_be_processed
-def create_3d_array(images):
+def create_3d_array(images):      ## creates a stack of images of the same kind and gets their sizes
     list_data = list(images.values())
 
     x = np.shape(list_data[0])[0]
@@ -25,7 +22,7 @@ def create_3d_array(images):
 
     # in cazul 3d, timpul de executie 113 secunde
 
-    for i in range(len(list_data)):  ##de modif cu buffer
+    for i in range(len(list_data)):  
         for row in range(0, x):
             for col in range(0, y):
                 arr1[i][row][col] = list_data[i][row][col]
@@ -47,7 +44,7 @@ def make_mbias(images):
     return get_stat(images)
 
 
-def make_mdark(images, mbias):
+def make_mdark(images, mbias):          #the mbias is made by subtracting the mbias from the dark image
     dark_arr = create_3d_array(images)
 
     if np.shape(dark_arr[0]) != np.shape(mbias):
@@ -57,14 +54,14 @@ def make_mdark(images, mbias):
     for i in range(np.shape(dark_arr)[0]):
         dark_arr[i] = np.subtract(dark_arr[i], mbias)
     # for zid in range(np.shape(dark_arr)[0]):
-    #     for xid in range(np.shape(dark_arr)[1]):                #de cautat met mai simple
+    #     for xid in range(np.shape(dark_arr)[1]):                #find less complex method
     #         for yid in range(np.shape(dark_arr)[2]):
     #             dark_arr[zid][xid][yid] = dark_arr[zid][xid][yid] - mbias[xid][yid]
     (avg, median) = get_stat(images)
     return median
 
 
-def make_mflat(images, mbias, mdark):
+def make_mflat(images, mbias, mdark):           ## for mflat, we need mbias and mdark to include in operations
     flat_arr = create_3d_array(images)
 
     if np.shape(flat_arr[0]) != np.shape(mbias) or np.shape(flat_arr[0]) != np.shape(mdark):
@@ -75,7 +72,7 @@ def make_mflat(images, mbias, mdark):
         flat_arr[i] = np.subtract(flat_arr[i], mbias)
         flat_arr[i] = np.subtract(flat_arr[i], mdark)
     # for zid in range(np.shape(flat_arr)[2]):
-    #     for xid in range(np.shape(flat_arr)[0]):                #de cautat met mai simple
+    #     for xid in range(np.shape(flat_arr)[0]):                #de cautat met mai putin complexe
     #         for yid in range(np.shape(flat_arr)[1]):
     #             flat_arr[zid][xid][yid] = flat_arr[zid][xid][yid] - mbias[xid][yid] - mdark[xid][yid]
     (not_imp, median) = get_stat(images)
@@ -87,8 +84,8 @@ def make_mflat(images, mbias, mdark):
     return median, median_norm
 
 
-def make_science_ready(images, mbias, mdark, mflatn):
-    light_arr = create_3d_array(images)
+def make_science_ready(images, mbias, mdark, mflatn):           # scince ready is the finite product, which includes all
+    light_arr = create_3d_array(images)                         # operations done on the previous types of images
 
     if np.shape(light_arr[0]) != np.shape(mbias) or np.shape(light_arr[0]) != np.shape(mdark):
         print("Error. Light and MBias or MDark format not compatible.")
@@ -103,7 +100,7 @@ def make_science_ready(images, mbias, mdark, mflatn):
         light_arr[i] = np.divide(light_arr[i], mflatn)
         light_arr[i] = np.matrix.round(light_arr[i], 2)
     # for zid in range(np.shape(light_arr)[2]):
-    #     for xid in range(np.shape(light_arr)[0]):                #de cautat met mai simple
+    #     for xid in range(np.shape(light_arr)[0]):                
     #         for yid in range(np.shape(light_arr)[1]):
     #             light_arr[zid][xid][yid] = (light_arr[zid][xid][yid] - mbias[xid][yid] - mdark[xid][yid]) / mflatn[xid][yid]
     #             light_arr[zid][xid][yid] = float("{:.2f}".format(light_arr[zid][xid][yid]))
@@ -113,8 +110,8 @@ def make_science_ready(images, mbias, mdark, mflatn):
 
 def main():
 
-    procedure = input("Select procedure: Mass processing or Selective processing (1 or 2): ")
-    if procedure == "1":
+    procedure = input("Select procedure: Mass processing or Selective processing (1 or 2): ")           #interogation on whether only one kind of image is processed
+    if procedure == "1":                                                                                #or all types
         (dark_list, flat_list, bias_list, light_list, mypath) = get_type()
 
         saving_path = input("Enter path for saving file: ")
@@ -149,7 +146,7 @@ def main():
 
     elif procedure == "2":
         number = int(input("Enter number of images to be processed: "))
-        saving_path = input("Enter path which contains images: ")           #folosesc aceeasi cale pt citire si salvare
+        saving_path = input("Enter path which contains images: ")           #for reading and saving, the same path is used
         list_img = list()
         for i in range (number):
             name = input("Enter name of image: ")
