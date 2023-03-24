@@ -5,7 +5,7 @@ import os
 import shutil
 from datetime import datetime
 
-def create_test(name):
+def create_test(name):          #function for creating new folder of acquisition
     path = os.getcwd()
     newpath = path + "/"
     if not os.path.exists(newpath + name):
@@ -19,7 +19,7 @@ def create_test(name):
     return newpath
 
 
-def save(image, path, config, directory):
+def save(image, path, config, directory):           #function for saving in folder
     hdu = pyfits.PrimaryHDU(image)
     hdulist = pyfits.HDUList([hdu])
 
@@ -42,7 +42,7 @@ def save(image, path, config, directory):
         print("The file does not exist")
 
 
-def parse_arguments():
+def parse_arguments():          #function for obtaining from user data for saving images
     # all arguments array
     #arguments = sys.argv[1:]
     argstr = input("Insert data (must include: name, exptime, nrimages, frame):  ")
