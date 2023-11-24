@@ -53,10 +53,6 @@ def make_mdark(images, mbias):          #the mbias is made by subtracting the mb
 
     for i in range(np.shape(dark_arr)[0]):
         dark_arr[i] = np.subtract(dark_arr[i], mbias)
-    # for zid in range(np.shape(dark_arr)[0]):
-    #     for xid in range(np.shape(dark_arr)[1]):                #find less complex method
-    #         for yid in range(np.shape(dark_arr)[2]):
-    #             dark_arr[zid][xid][yid] = dark_arr[zid][xid][yid] - mbias[xid][yid]
     (avg, median) = get_stat(images)
     return median
 
@@ -71,10 +67,7 @@ def make_mflat(images, mbias, mdark):           ## for mflat, we need mbias and 
     for i in range(np.shape(flat_arr)[0]):
         flat_arr[i] = np.subtract(flat_arr[i], mbias)
         flat_arr[i] = np.subtract(flat_arr[i], mdark)
-    # for zid in range(np.shape(flat_arr)[2]):
-    #     for xid in range(np.shape(flat_arr)[0]):                #de cautat met mai putin complexe
-    #         for yid in range(np.shape(flat_arr)[1]):
-    #             flat_arr[zid][xid][yid] = flat_arr[zid][xid][yid] - mbias[xid][yid] - mdark[xid][yid]
+    
     (not_imp, median) = get_stat(images)
     median = np.array(median)
     avg_pixel = median.mean()
